@@ -1,7 +1,8 @@
 using UnityEngine;
+using Photon.Pun;
 
 
-    public class Button : MonoBehaviour,I_Interactable,I_Damageable
+    public class Button : MonoBehaviourPun,I_Interactable,I_Damageable
     {
         private bool isPressed = false;
 
@@ -28,6 +29,17 @@ using UnityEngine;
             {
                 health = 0;
                 gameObject.SetActive(false);
+                PhotonNetwork.Destroy(gameObject);
+            }
+        }
+        [PunRPC]
+        public void RPC_TakeDamage(int damage)
+        {
+            if (!photonView.IsMine) return;
+            health -= damage;
+            if (health <= 0)
+            {
+                PhotonNetwork.Destroy(gameObject);
             }
         }
     }

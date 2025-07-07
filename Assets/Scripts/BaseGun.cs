@@ -3,6 +3,7 @@ using System.Collections;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
+using Photon.Pun;
 
 public class BaseGun : MonoBehaviour
 {
@@ -10,6 +11,7 @@ public class BaseGun : MonoBehaviour
     public GameObject firePoint;
 
     public LineRenderer tracerPrefab;
+    [SerializeField] private PhotonView photonView;
 
 
 
@@ -41,6 +43,8 @@ public class BaseGun : MonoBehaviour
 
     public void Update()
     {
+        if (!photonView.IsMine) return;
+        
         if (Input.GetMouseButtonDown(0))
         {
             Shoot();
@@ -56,17 +60,19 @@ public class BaseGun : MonoBehaviour
         Debug.DrawRay(ray.origin, ray.direction * range, Color.red);
         if (Physics.Raycast(ray, out hitInfo, range))
         {
-            
-            I_Damageable damageable = hitInfo.collider.GetComponent<I_Damageable>();
-            if (damageable != null)
+            PhotonView targetPhotonView = hitInfo.collider.GetComponent<PhotonView>();
+            if (!targetPhotonView.IsMine && targetPhotonView != null)
             {
-                damageable.Damage(damage);
-                //add effect at hit point
+                targetPhotonView.RPC("RPC_TakeDamage", RpcTarget.All, damage);
             }
+            // I_Damageable damageable = hitInfo.collider.GetComponent<I_Damageable>();
+            // if (damageable != null)
+            // {
+            //     damageable.Damage(damage);
+            //     //add effect at hit point
+            // }
             GameObject hitEffect = Instantiate(hitEffectPrefab, hitInfo.point, Quaternion.LookRotation(hitInfo.normal));
             Destroy(hitEffect, 2f);
-
-            
         }
     }
 
