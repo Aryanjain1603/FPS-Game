@@ -1,96 +1,287 @@
 using System;
 using System.Collections;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 using Photon.Pun;
+using TMPro;
 
-public class BaseGun : MonoBehaviour
+[System.Serializable]
+public class GunStats
 {
-    [SerializeField] private Camera cam;
-    public GameObject firePoint;
-
-    public LineRenderer tracerPrefab;
-    [SerializeField] private PhotonView photonView;
-
-
-
-    public Image crosshair;
-    public float bulletSpeed = 10f;
-    public float fireRate = 1f;
+    [Header("Damage & Range")]
     public int damage = 10;
     public float range = 100f;
+    
+    [Header("Fire Rate & Reload")]
+    public float fireRate = 1f;
     public float reloadTime = 1f;
+    
+    [Header("Ammo")]
+    public int clipSize = 30;
+    public int maxClipSize = 30;
     public int ammo = 100;
     public int maxAmmo = 100;
-    public int clipSize = 100;
-    public int maxClipSize = 100;
-    public bool reloading = false;
-    public LayerMask layerMask;
-    [SerializeField] private BulletPooling bulletPooling;
+    
+    [Header("Accuracy")]
+    public float accuracy = 1f;
+    public float recoil = 0.1f;
+    
+    [Header("Bullet Physics")]
+    public float bulletSpeed = 10f;
+    public int pelletsPerShot = 1; // For shotguns
+    public float spreadAngle = 0f; // For shotguns and automatic weapons
+}
 
-
+public abstract class BaseGun : MonoBehaviourPun
+{
+    [Header("References")]
+    [SerializeField] protected Camera cam;
+    [SerializeField] protected GameObject firePoint;
+    [SerializeField] protected PhotonView photonView;
+    [SerializeField] protected BulletPooling bulletPooling;
+    
+    [Header("Gun Stats")]
+    [SerializeField] protected GunStats stats;
+    
+    [Header("UI")]
+    [SerializeField] protected Image crosshair;
+    [SerializeField] protected TextMeshProUGUI ammoText;
+    
     [Header("Effects")]
-    [SerializeField] ParticleSystem muzzleFlash;
-    [SerializeField] GameObject hitEffectPrefab;
-
-
-
-    private void Awake()
+    [SerializeField] protected ParticleSystem muzzleFlash;
+    [SerializeField] protected GameObject hitEffectPrefab;
+    [SerializeField] protected LineRenderer tracerPrefab;
+    [SerializeField] protected AudioSource audioSource;
+    [SerializeField] protected AudioClip shootSound;
+    [SerializeField] protected AudioClip reloadSound;
+    [SerializeField] protected AudioClip emptySound;
+    
+    [Header("Targeting")]
+    [SerializeField] protected LayerMask layerMask;
+    
+    // State variables
+    protected int currentAmmo;
+    protected int currentClipAmmo;
+    protected bool isReloading = false;
+    protected bool canShoot = true;
+    protected float nextFireTime = 0f;
+    
+    // Events
+    public System.Action<int, int> OnAmmoChanged;
+    public System.Action OnReloadStart;
+    public System.Action OnReloadComplete;
+    public System.Action OnShoot;
+    
+    protected virtual void Awake()
     {
-
+        currentAmmo = stats.ammo;
+        currentClipAmmo = stats.clipSize;
+        
+        if (photonView == null)
+            photonView = GetComponent<PhotonView>();
+            
+        if (cam == null)
+            cam = Camera.main;
     }
-
-    public void Update()
+    
+    protected virtual void Start()
+    {
+        UpdateAmmoUI();
+    }
+    
+    protected virtual void Update()
     {
         if (!photonView.IsMine) return;
         
+        HandleInput();
+        UpdateAmmoUI();
+    }
+    
+    protected virtual void HandleInput()
+    {
+        // Reload input
+        if (Input.GetKeyDown(KeyCode.R) && !isReloading && currentClipAmmo < stats.clipSize && currentAmmo > 0)
+        {
+            StartReload();
+        }
+        
+        // Fire input - override in child classes for different fire modes
         if (Input.GetMouseButtonDown(0))
         {
-            Shoot();
+            TryShoot();
         }
     }
-
-    public void Shoot()
+    
+    public virtual void TryShoot()
     {
-        muzzleFlash.Play();
-        Ray ray = new Ray(cam.transform.position, cam.transform.forward);
-        // StartCoroutine(PlayBulletTrail(cam.transform.position,cam.transform.forward * range));
-        RaycastHit hitInfo;
-        Debug.DrawRay(ray.origin, ray.direction * range, Color.red);
-        if (Physics.Raycast(ray, out hitInfo, range))
+        if (!CanShoot()) return;
+        
+        if (currentClipAmmo <= 0)
         {
-            PhotonView targetPhotonView = hitInfo.collider.GetComponent<PhotonView>();
-            if (!targetPhotonView.IsMine && targetPhotonView != null)
-            {
-                targetPhotonView.RPC("RPC_TakeDamage", RpcTarget.All, damage);
-            }
-            // I_Damageable damageable = hitInfo.collider.GetComponent<I_Damageable>();
-            // if (damageable != null)
-            // {
-            //     damageable.Damage(damage);
-            //     //add effect at hit point
-            // }
+            PlayEmptySound();
+            return;
+        }
+        
+        Shoot();
+        currentClipAmmo--;
+        nextFireTime = Time.time + (1f / stats.fireRate);
+        
+        OnShoot?.Invoke();
+    }
+    
+    protected virtual bool CanShoot()
+    {
+        return canShoot && !isReloading && Time.time >= nextFireTime && currentClipAmmo > 0;
+    }
+    
+    protected abstract void Shoot();
+    
+    protected virtual void FireBullet(Vector3 origin, Vector3 direction)
+    {
+        Ray ray = new Ray(origin, direction);
+        RaycastHit hitInfo;
+        
+        if (Physics.Raycast(ray, out hitInfo, stats.range, layerMask))
+        {
+            HandleHit(hitInfo);
+        }
+        
+        // Visual effects
+        PlayMuzzleFlash();
+        PlayShootSound();
+        
+        // Spawn tracer effect
+        if (tracerPrefab != null)
+        {
+            StartCoroutine(PlayBulletTrail(origin, hitInfo.collider ? hitInfo.point : origin + direction * stats.range));
+        }
+    }
+    
+    protected virtual void HandleHit(RaycastHit hitInfo)
+    {
+        // Damage target
+        PhotonView targetPhotonView = hitInfo.collider.GetComponent<PhotonView>();
+        if (targetPhotonView != null && !targetPhotonView.IsMine)
+        {
+            targetPhotonView.RPC("RPC_TakeDamage", RpcTarget.All, stats.damage);
+        }
+        
+        // Spawn hit effect
+        if (hitEffectPrefab != null)
+        {
             GameObject hitEffect = Instantiate(hitEffectPrefab, hitInfo.point, Quaternion.LookRotation(hitInfo.normal));
             Destroy(hitEffect, 2f);
         }
     }
-
-    private IEnumerator PlayBulletTrail(Vector3 start, Vector3 end)
+    
+    public virtual void StartReload()
     {
-        LineRenderer lr = Instantiate(tracerPrefab);
-        lr.SetPosition(0,start);   
-        lr.SetPosition(1,start);
+        if (isReloading || currentAmmo <= 0) return;
         
-        float time = 0;
-        float duration = 0.05f;
-        while (time < duration)
-        {
-            lr.SetPosition(1, Vector3.Lerp(start, end, time / duration));
-            time += Time.deltaTime;
-            yield return null;
-        }
-        lr.SetPosition(1,end);
-        Destroy(lr, 0.2f);
+        StartCoroutine(ReloadCoroutine());
     }
+    
+    protected virtual IEnumerator ReloadCoroutine()
+    {
+        isReloading = true;
+        OnReloadStart?.Invoke();
+        PlayReloadSound();
+        
+        yield return new WaitForSeconds(stats.reloadTime);
+        
+        int ammoNeeded = stats.clipSize - currentClipAmmo;
+        int ammoToReload = Mathf.Min(ammoNeeded, currentAmmo);
+        
+        currentClipAmmo += ammoToReload;
+        currentAmmo -= ammoToReload;
+        
+        isReloading = false;
+        OnReloadComplete?.Invoke();
+    }
+    
+    protected virtual Vector3 ApplySpread(Vector3 direction)
+    {
+        if (stats.spreadAngle <= 0) return direction;
+        
+        float spreadX = UnityEngine.Random.Range(-stats.spreadAngle, stats.spreadAngle);
+        float spreadY = UnityEngine.Random.Range(-stats.spreadAngle, stats.spreadAngle);
+        
+        Vector3 spread = new Vector3(spreadX, spreadY, 0);
+        return Quaternion.Euler(spread) * direction;
+    }
+    
+    protected virtual void UpdateAmmoUI()
+    {
+        if (ammoText != null)
+        {
+            ammoText.text = $"{currentClipAmmo}/{currentAmmo}";
+        }
+        
+        OnAmmoChanged?.Invoke(currentClipAmmo, currentAmmo);
+    }
+    
+    protected virtual void PlayMuzzleFlash()
+    {
+        if (muzzleFlash != null)
+            muzzleFlash.Play();
+    }
+    
+    protected virtual void PlayShootSound()
+    {
+        if (audioSource != null && shootSound != null)
+            audioSource.PlayOneShot(shootSound);
+    }
+    
+    protected virtual void PlayReloadSound()
+    {
+        if (audioSource != null && reloadSound != null)
+            audioSource.PlayOneShot(reloadSound);
+    }
+    
+    protected virtual void PlayEmptySound()
+    {
+        if (audioSource != null && emptySound != null)
+            audioSource.PlayOneShot(emptySound);
+    }
+    
+    protected virtual IEnumerator PlayBulletTrail(Vector3 startPoint, Vector3 endPoint)
+    {
+        if (tracerPrefab == null) yield break;
+        
+        LineRenderer tracer = Instantiate(tracerPrefab);
+        tracer.SetPosition(0, startPoint);
+        tracer.SetPosition(1, endPoint);
+        
+        yield return new WaitForSeconds(0.1f);
+        
+        if (tracer != null)
+            Destroy(tracer.gameObject);
+    }
+    
+    // Utility methods
+    public virtual void AddAmmo(int amount)
+    {
+        currentAmmo = Mathf.Min(currentAmmo + amount, stats.maxAmmo);
+    }
+    
+    public virtual bool IsEmpty()
+    {
+        return currentClipAmmo <= 0 && currentAmmo <= 0;
+    }
+    
+    public virtual bool NeedsReload()
+    {
+        return currentClipAmmo <= 0 && currentAmmo > 0;
+    }
+    
+    public virtual float GetReloadProgress()
+    {
+        return isReloading ? 1f - (stats.reloadTime) : 0f;
+    }
+    
+    // Getters
+    public int CurrentAmmo => currentAmmo;
+    public int CurrentClipAmmo => currentClipAmmo;
+    public bool IsReloading => isReloading;
+    public GunStats Stats => stats;
 }
