@@ -35,16 +35,16 @@ public class PlayerInteractor : MonoBehaviour
                     interactable.Interact();
                 }
             }
-            I_Damageable damageable = hit.collider.GetComponent<I_Damageable>();
-            if (damageable != null)
-            {
-                Debug.DrawRay(cam.transform.position, cam.transform.forward * hitDistance, Color.red);
-              
-                if (Input.GetMouseButtonDown(0))
-                {
-                    damageable.Damage(50);
-                }
-            }
+            // I_Damageable damageable = hit.collider.GetComponent<I_Damageable>();
+            // if (damageable != null)
+            // {
+            //     Debug.DrawRay(cam.transform.position, cam.transform.forward * hitDistance, Color.red);
+            //   
+            //     if (Input.GetMouseButtonDown(0))
+            //     {
+            //         damageable.Damage(50);
+            //     }
+            // }
         }
     }
 }
