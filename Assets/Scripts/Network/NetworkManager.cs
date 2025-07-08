@@ -2,12 +2,20 @@ using UnityEngine;
 using Photon.Pun;
 using Photon.Realtime;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class NetworkManager :
         MonoBehaviourPunCallbacks
 {
     public static NetworkManager instance;
 
+    
+    
+        public InputField JoinRoomNameInput;
+        public InputField CreateRoomNameInput;
+        public Button createRoomButton;
+        public Button joinRoomButton;
+        public Button leaveRoomButton;
         public GameObject playerPrefab;
         
         private void Awake()
@@ -37,18 +45,18 @@ public class NetworkManager :
             // PhotonNetwork.JoinRandomRoom();
         }
 
-        public void CreateRoom(string roomName)
-        {          
-            roomName = "Room";
+        public void CreateRoom(string _roomName)
+        {
+            
             RoomOptions option = new RoomOptions();
             option.MaxPlayers = 4;
-            PhotonNetwork.CreateRoom(roomName, option, TypedLobby.Default);
+            PhotonNetwork.CreateRoom(_roomName, option, TypedLobby.Default);
+            
+                
         }
-        
-        public void JoinRoom(string roomName)
+        public void JoinRoomUsingCode(string _roomName)
         {
-            roomName = "Room";
-            PhotonNetwork.JoinRoom(roomName);
+            PhotonNetwork.JoinRoom(_roomName);
         }
         
         public override void OnJoinedRoom()
