@@ -1,19 +1,20 @@
+using TMPro;
 using UnityEngine;
 
 namespace Network
 {
     public class RoomItem : MonoBehaviour
     {
-        public string roomName;
+        public TextMeshProUGUI roomName;
         
         public void SetRoomName(string roomName)
         {
-            this.roomName = roomName;
+            this.roomName.text = roomName;
         }
         
         public void OnClickRoomItem()
         {
-            NetworkManager.instance.JoinRoomUsingCode(roomName);
+            NetworkManager.instance.JoinRoomUsingCode(roomName.text);
         }
         
     }
