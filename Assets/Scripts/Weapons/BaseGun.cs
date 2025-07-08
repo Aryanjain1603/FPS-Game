@@ -223,6 +223,7 @@ public abstract class BaseGun : MonoBehaviourPun
     protected virtual void PlayMuzzleFlash()
     {
         if (muzzleFlash != null)
+            muzzleFlash.transform.position = firePoint.transform.position;
             muzzleFlash.Play();
     }
     

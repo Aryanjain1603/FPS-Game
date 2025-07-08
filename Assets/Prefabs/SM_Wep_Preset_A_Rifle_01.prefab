@@ -185,7 +185,6 @@ GameObject:
   - component: {fileID: 5712266340729711211}
   - component: {fileID: 8871411048386605159}
   - component: {fileID: 9000991574260781537}
-  - component: {fileID: 6177227501560919415}
   m_Layer: 0
   m_Name: SM_Wep_Preset_A_Rifle_01
   m_TagString: Untagged
@@ -201,7 +200,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2211017474764945746}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -0, y: 0.337, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -211,6 +210,7 @@ Transform:
   - {fileID: 7526191671990843956}
   - {fileID: 1149123747200494859}
   - {fileID: 1780000447231901062}
+  - {fileID: 4554946231073928051}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &5712266340729711211
@@ -288,51 +288,6 @@ MeshCollider:
   m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: 43531877904820074, guid: d70ea84b37167204484057e531733574, type: 2}
---- !u!114 &6177227501560919415
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2211017474764945746}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a016297f14614316a2a75bcf4b5dc3b9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  cam: {fileID: 0}
-  firePoint: {fileID: 0}
-  photonView: {fileID: 0}
-  bulletPooling: {fileID: 0}
-  stats:
-    damage: 10
-    range: 100
-    fireRate: 1
-    reloadTime: 1
-    clipSize: 30
-    maxClipSize: 30
-    ammo: 100
-    maxAmmo: 100
-    accuracy: 1
-    recoil: 0.1
-    bulletSpeed: 10
-    pelletsPerShot: 1
-    spreadAngle: 0
-  crosshair: {fileID: 0}
-  ammoText: {fileID: 0}
-  muzzleFlash: {fileID: 0}
-  hitEffectPrefab: {fileID: 0}
-  tracerPrefab: {fileID: 0}
-  audioSource: {fileID: 0}
-  shootSound: {fileID: 0}
-  reloadSound: {fileID: 0}
-  emptySound: {fileID: 0}
-  layerMask:
-    serializedVersion: 2
-    m_Bits: 0
-  recoilAccumulation: 0.02
-  recoilRecovery: 0.1
-  maxRecoil: 0.5
 --- !u!1 &3861430805136732989
 GameObject:
   m_ObjectHideFlags: 0
@@ -505,6 +460,37 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!1 &5851326231539310198
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4554946231073928051}
+  m_Layer: 0
+  m_Name: FirePoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4554946231073928051
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5851326231539310198}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.001, y: 0.1014, z: 0.7272}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 3328181887920910348}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7945843599150008854
 GameObject:
   m_ObjectHideFlags: 0
