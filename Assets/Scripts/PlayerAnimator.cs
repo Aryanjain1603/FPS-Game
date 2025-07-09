@@ -10,7 +10,7 @@ public class PlayerAnimatorController : MonoBehaviourPun
 
     private Vector3 lastPosition;
     private float speed;
-
+    private bool isAiming = false;
     private void Awake()
     {
         animator = GetComponent<Animator>();
@@ -24,7 +24,15 @@ public class PlayerAnimatorController : MonoBehaviourPun
 
         UpdateMovementAnimations();
         UpdateStateAnimations();
+        UpdateAimingAnimation();
     }
+    private void UpdateAimingAnimation()
+    {
+        // Replace with your actual input logic
+        isAiming = Input.GetMouseButton(1); // Right click to aim
+        animator.SetBool("Aim", isAiming);
+    }
+
 
     private void UpdateMovementAnimations()
     {

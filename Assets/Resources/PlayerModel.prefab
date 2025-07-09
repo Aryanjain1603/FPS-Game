@@ -391,7 +391,6 @@ GameObject:
   - component: {fileID: 5935846734456543999}
   - component: {fileID: 526754351487913321}
   - component: {fileID: 7209690850340995069}
-  - component: {fileID: 5081271841011482413}
   - component: {fileID: 6418889675902020718}
   m_Layer: 0
   m_Name: PlayerModel
@@ -543,6 +542,8 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 8
   health: 100
+  isGrounded: 0
+  input: {fileID: 0}
 --- !u!114 &7162572763327165703
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -638,22 +639,6 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &5081271841011482413
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1386329199413999909}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fff0960ef4ea6e04eac66b4a7fd2189d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_RigLayers:
-  - m_Rig: {fileID: 9176912117000344488}
-    m_Active: 1
-  m_Effectors: []
 --- !u!114 &6418889675902020718
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1908,7 +1893,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 9026147219322449480}
-  - component: {fileID: 7523377398033753144}
   m_Layer: 0
   m_Name: SM_Chr_Soldier_Female_01_Alt_02
   m_TagString: Untagged
@@ -1935,28 +1919,6 @@ Transform:
   - {fileID: 4522128319640088560}
   m_Father: {fileID: 8748111350911264155}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!95 &7523377398033753144
-Animator:
-  serializedVersion: 7
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3171055768014999185}
-  m_Enabled: 1
-  m_Avatar: {fileID: 9000000, guid: b3a849229c6faea448cb1f0200840e8d, type: 3}
-  m_Controller: {fileID: 9100000, guid: e2cf68ff4b1ffda45a77f7307dd789b9, type: 2}
-  m_CullingMode: 1
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 1
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_AnimatePhysics: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorStateOnDisable: 0
-  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &3193594325196109079
 GameObject:
   m_ObjectHideFlags: 0
