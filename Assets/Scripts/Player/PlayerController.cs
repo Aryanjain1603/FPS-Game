@@ -19,9 +19,9 @@ public class PlayerController : MonoBehaviourPun, I_Damageable
 
     private CharacterController controller;
     private Vector3 velocity;
-    private bool isGrounded;
+    public bool isGrounded;
 
-    private PlayerInputHandler input;
+    public PlayerInputHandler input;
     private PlayerCamera playerCam;
     
     //Events ->

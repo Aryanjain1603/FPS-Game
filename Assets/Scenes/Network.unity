@@ -2281,7 +2281,7 @@ MonoBehaviour:
   createRoomButton: {fileID: 0}
   joinRoomButton: {fileID: 0}
   leaveRoomButton: {fileID: 0}
-  playerPrefab: {fileID: 7399129952486551165, guid: 25b968e7c100e46d6b517d0b6de5acdd, type: 3}
+  playerPrefab: {fileID: 1386329199413999909, guid: ae4a92616485e4ab58edc5c42cf35e57, type: 3}
 --- !u!4 &1305240009
 Transform:
   m_ObjectHideFlags: 0
