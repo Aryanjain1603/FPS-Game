@@ -4,19 +4,15 @@ using Photon.Pun;
 [RequireComponent(typeof(Animator))]
 public class PlayerAnimatorController : MonoBehaviourPun
 {
-    private Animator animator;
-    private PlayerController playerController;
-    private PlayerInputHandler inputHandler;
+    public Animator animator;
+    public PlayerController playerController;
+    public PlayerInputHandler inputHandler;
 
     private Vector3 lastPosition;
     private float speed;
-    private bool isAiming = false;
-    private void Awake()
-    {
-        animator = GetComponent<Animator>();
-        playerController = GetComponent<PlayerController>();
-        inputHandler = GetComponent<PlayerInputHandler>();
-    }
+    public bool isAiming = false;
+    public int aimLayerIndex = 1;
+    
 
     private void Update()
     {
@@ -31,6 +27,10 @@ public class PlayerAnimatorController : MonoBehaviourPun
         // Replace with your actual input logic
         isAiming = Input.GetMouseButton(1); // Right click to aim
         animator.SetBool("Aim", isAiming);
+        
+        // Set layer weight for aiming
+        animator.SetLayerWeight(aimLayerIndex, isAiming ? 1f : 0f);
+        
     }
 
 
