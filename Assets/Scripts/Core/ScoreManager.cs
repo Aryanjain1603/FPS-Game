@@ -86,7 +86,11 @@ public class ScoreManager : MonoBehaviourPunCallbacks
     {
         OnScoreChanged?.Invoke(actorNumber, newScore);
         playerScores[actorNumber] =  newScore;
-        Debug.Log($"updated Score : Player {actorNumber} : {newScore}");
+        
+        Player player = PhotonNetwork.CurrentRoom.GetPlayer(actorNumber);
+        string nickname = player.NickName;
+        
+        Debug.Log($"updated Score : Player {nickname} : {newScore}");
     }
 
     [PunRPC]

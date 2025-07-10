@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using NUnit.Framework.Constraints;
 using UnityEngine;
 using Photon.Pun;
 
@@ -8,12 +10,17 @@ public class PlayerController : MonoBehaviourPun, I_Damageable
     public float moveSpeed = 5f;
     public float gravity = -9.81f;
     public float jumpHeight = 2f;
+    private bool gunSwitch = false;
 
     [Header("Ground Check")]
     public Transform groundCheck;
     public float groundDistance = 0.4f;
     public LayerMask groundMask;
 
+    [Header("weapons")] [SerializeField] private GameObject pistol;
+    [SerializeField] private GameObject AR;
+    [SerializeField] private GameObject sniper;
+    
     [Header("Health")]
     public int health = 100;
 
@@ -50,10 +57,23 @@ public class PlayerController : MonoBehaviourPun, I_Damageable
     {
         if (!photonView.IsMine) return;
 
+        HandleGunSwitching();
+
         HandleMovement();
         playerCam.HandleLook(input.LookInput);
     }
 
+    private void HandleGunSwitching()
+    {
+        if (Input.GetKeyDown(KeyCode.P))
+        {
+            gunSwitch = !gunSwitch;
+            AR.SetActive(!gunSwitch);
+            sniper.SetActive(gunSwitch);
+        }
+    }
+    
+    
     private void HandleMovement()
     {
         // Ground Check
@@ -106,9 +126,9 @@ public class PlayerController : MonoBehaviourPun, I_Damageable
         ReSpawn();
     }
 
-    private void ReSpawn()
-    {
-        transform.position = Vector3.zero;
+    public void ReSpawn()
+    { 
+        transform.position = NetworkManager.instance.GetPosition();
         health = 100;
         OnDamage?.Invoke(health);
 

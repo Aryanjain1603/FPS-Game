@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
 using Photon.Realtime;
@@ -13,6 +14,9 @@ public class NetworkManager :
     [SerializeField] private TMP_InputField NickNameInputField;
     [SerializeField] private Button startButton;
     private string nickName;
+    
+    
+    public List<Transform> spawnPoints = new List<Transform>();
 
     public GameObject intiPanel;
     public GameObject networkPanel;
@@ -84,12 +88,20 @@ public class NetworkManager :
             // Only spawn player if we're in the game scene
             if (scene.name == "Demo")
             {
-                PhotonNetwork.Instantiate(playerPrefab.name, Vector3.zero, Quaternion.identity);
+                
+                
+                PhotonNetwork.Instantiate(playerPrefab.name, GetPosition(), Quaternion.identity);
                 PhotonNetwork.LocalPlayer.NickName = nickName;
             }
 
             // Unsubscribe after spawning
             SceneManager.sceneLoaded -= OnSceneLoaded;
+        }
+
+        public Vector3 GetPosition()
+        {
+            int random = Random.Range(0, spawnPoints.Count);
+            return  spawnPoints[random].position;
         }
 
         
