@@ -77,7 +77,7 @@ public class NetworkManager :
         public override void OnJoinedRoom()
         {
             Debug.Log("Joined Room: " + PhotonNetwork.CurrentRoom.Name);
-            PhotonNetwork.LoadLevel("Demo");
+            PhotonNetwork.LoadLevel("BattleScene");
 
             // Subscribe to scene load event
             SceneManager.sceneLoaded += OnSceneLoaded;
@@ -86,7 +86,7 @@ public class NetworkManager :
         private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
         {
             // Only spawn player if we're in the game scene
-            if (scene.name == "Demo")
+            if (scene.name == "BattleScene")
             {
                 
                 

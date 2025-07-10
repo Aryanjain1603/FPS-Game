@@ -2261,9 +2261,9 @@ MonoBehaviour:
   photonView: {fileID: 7745151086323193884}
   bulletPooling: {fileID: 0}
   stats:
-    damage: 10
+    damage: 25
     range: 100
-    fireRate: 10
+    fireRate: 20
     reloadTime: 1
     clipSize: 30
     maxClipSize: 30
