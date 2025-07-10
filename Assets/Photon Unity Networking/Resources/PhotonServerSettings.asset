@@ -55,6 +55,9 @@ MonoBehaviour:
   - RespawnSpaceship
   - RPC_Damage
   - RPC_TakeDamage
+  - EndRound
+  - UpdateKillCountRPC
+  - RPC_UpdateRoundDuration
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1

@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 25b347d4f25bb4f1386e09801c1d43c5
+timeCreated: 1473933328
+licenseType: Store
+NativeFormatImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 127325
+  packageName: Particle Pack
+  packageVersion: 3.1
+  assetPath: Assets/UnityTechnologies/ParticlePack/EffectExamples/Goop Effects/Prefabs/GoopStreamEffect.prefab
+  uploadId: 691001

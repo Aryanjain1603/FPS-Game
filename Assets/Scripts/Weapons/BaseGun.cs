@@ -163,7 +163,9 @@ public abstract class BaseGun : MonoBehaviourPun
         PhotonView targetPhotonView = hitInfo.collider.GetComponent<PhotonView>();
         if (targetPhotonView != null && !targetPhotonView.IsMine)
         {
-            targetPhotonView.RPC("RPC_TakeDamage", RpcTarget.All, stats.damage);
+            int damage = stats.damage;
+            int attackerActorNumber = PhotonNetwork.LocalPlayer.ActorNumber;
+            targetPhotonView.RPC("RPC_TakeDamage", RpcTarget.All, damage,attackerActorNumber);
         }
         
         // Spawn hit effect

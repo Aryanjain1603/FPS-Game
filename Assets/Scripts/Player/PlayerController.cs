@@ -86,7 +86,7 @@ public class PlayerController : MonoBehaviourPun, I_Damageable
     }
 
     [PunRPC]
-    public void RPC_TakeDamage(int damage)
+    public void RPC_TakeDamage(int damage, int attackerActonNumber)
     {
         if (!photonView.IsMine) return;
         health -= damage;
@@ -95,9 +95,15 @@ public class PlayerController : MonoBehaviourPun, I_Damageable
         
         if (health <= 0)
         {
-            ReSpawn();
+            Die(attackerActonNumber);
             // PhotonNetwork.Destroy(gameObject);
         }
+    }
+
+    private void Die(int attackerActonNumber)
+    {
+        ScoreManager.Instance.AddKill(attackerActonNumber);
+        ReSpawn();
     }
 
     private void ReSpawn()

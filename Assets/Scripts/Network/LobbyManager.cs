@@ -6,7 +6,9 @@ public class LobbyManager : MonoBehaviour
 {
     [SerializeField] private TMP_InputField createRoomInputField;
     [SerializeField] private TMP_InputField joinRoomInputField;
-
+    
+    
+    
     public void CreateRoom()
     {
         if (createRoomInputField.text != "")

@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 2ca4b752efdbd41f5a2a8973ed56b8e6
+timeCreated: 1473942290
+licenseType: Store
+NativeFormatImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 127325
+  packageName: Particle Pack
+  packageVersion: 3.1
+  assetPath: Assets/UnityTechnologies/ParticlePack/EffectExamples/Goop Effects/Prefabs/GoopSprayEffect.prefab
+  uploadId: 691001

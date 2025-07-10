@@ -1,6 +1,7 @@
 using UnityEngine;
 using Photon.Pun;
 using Photon.Realtime;
+using TMPro;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
@@ -8,15 +9,15 @@ public class NetworkManager :
         MonoBehaviourPunCallbacks
 {
     public static NetworkManager instance;
+    
+    [SerializeField] private TMP_InputField NickNameInputField;
+    [SerializeField] private Button startButton;
+    private string nickName;
 
+    public GameObject intiPanel;
+    public GameObject networkPanel;
     
-    
-        public InputField JoinRoomNameInput;
-        public InputField CreateRoomNameInput;
-        public Button createRoomButton;
-        public Button joinRoomButton;
-        public Button leaveRoomButton;
-        public GameObject playerPrefab;
+    public GameObject playerPrefab;
         
         private void Awake()
         {
@@ -29,10 +30,18 @@ public class NetworkManager :
         
         private void Start()
         {
-            //connect to photon cloud
-            PhotonNetwork.ConnectUsingSettings();
+            
+            // ConnectToServer();
         }
 
+        public void ConnectToServer()
+        {
+            if (NickNameInputField.text.Length >= 0)
+            {
+                nickName = NickNameInputField.text;
+                PhotonNetwork.ConnectUsingSettings();
+            }
+        }
         public override void OnConnectedToMaster()
         {
             Debug.Log("connected to photon master service");
@@ -42,6 +51,8 @@ public class NetworkManager :
         public override void OnJoinedLobby()
         {
             Debug.Log("joined lobby");
+            intiPanel.SetActive(false);
+            networkPanel.SetActive(true);
             // PhotonNetwork.JoinRandomRoom();
         }
 
@@ -74,6 +85,7 @@ public class NetworkManager :
             if (scene.name == "Demo")
             {
                 PhotonNetwork.Instantiate(playerPrefab.name, Vector3.zero, Quaternion.identity);
+                PhotonNetwork.LocalPlayer.NickName = nickName;
             }
 
             // Unsubscribe after spawning
