@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using ExitGames.Client.Photon;
 using UnityEngine;
 using Photon.Pun;
 using Photon.Realtime;
@@ -32,11 +33,7 @@ public class NetworkManager :
             DontDestroyOnLoad(gameObject);
         }
         
-        private void Start()
-        {
-            
-            // ConnectToServer();
-        }
+
 
         public void ConnectToServer()
         {
@@ -54,6 +51,8 @@ public class NetworkManager :
         
         public override void OnJoinedLobby()
         {
+            PhotonNetwork.NetworkingClient.LoadBalancingPeer.TrafficStatsEnabled = true;
+
             Debug.Log("joined lobby");
             intiPanel.SetActive(false);
             networkPanel.SetActive(true);

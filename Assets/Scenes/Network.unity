@@ -4571,6 +4571,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3092849426819398039}
   - component: {fileID: 1820713000358145514}
+  - component: {fileID: 9210365946148368833}
   m_Layer: 0
   m_Name: NetworkManager
   m_TagString: Untagged
@@ -4578,6 +4579,18 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!114 &9210365946148368833
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9210365946148368832}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 87c1f0c1598034d069730f2e67edd175, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

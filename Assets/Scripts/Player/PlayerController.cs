@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Cinemachine;
 using NUnit.Framework.Constraints;
 using UnityEngine;
 using Photon.Pun;
@@ -11,6 +12,7 @@ public class PlayerController : MonoBehaviourPun, I_Damageable
     public float gravity = -9.81f;
     public float jumpHeight = 2f;
     private bool gunSwitch = false;
+    
 
     [Header("Ground Check")]
     public Transform groundCheck;
@@ -55,12 +57,21 @@ public class PlayerController : MonoBehaviourPun, I_Damageable
 
     private void Update()
     {
+        CheckForMapFallOff();
         if (!photonView.IsMine) return;
 
         HandleGunSwitching();
 
         HandleMovement();
         playerCam.HandleLook(input.LookInput);
+    }
+
+    private void CheckForMapFallOff()
+    {
+        if (transform.position.y < -10f)
+        {
+            ReSpawn();
+        }
     }
 
     private void HandleGunSwitching()
@@ -102,6 +113,7 @@ public class PlayerController : MonoBehaviourPun, I_Damageable
         if (health <= 0)
         {
             PhotonNetwork.Destroy(gameObject);
+            controller.enabled = false;
         }
     }
 
@@ -131,6 +143,8 @@ public class PlayerController : MonoBehaviourPun, I_Damageable
         transform.position = NetworkManager.instance.GetPosition();
         health = 100;
         OnDamage?.Invoke(health);
-
+        controller.enabled = true;
+        health = 100;
+        OnDamage?.Invoke(health);
     }
 }
