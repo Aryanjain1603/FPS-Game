@@ -29,7 +29,8 @@ public class PlayerAnimatorController : MonoBehaviourPun
         animator.SetBool("Aim", isAiming);
         
         // Set layer weight for aiming
-        animator.SetLayerWeight(aimLayerIndex, isAiming ? 1f : 0f);
+        
+        // animator.SetLayerWeight(aimLayerIndex, isAiming ? 1f : 0f);
         
     }
 
