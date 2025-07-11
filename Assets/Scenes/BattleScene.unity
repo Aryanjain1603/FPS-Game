@@ -13041,7 +13041,7 @@ MeshCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 5
-  m_Convex: 1
+  m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: -1725050727459225720, guid: d825e0eda667c4abf9e9adc6858b5d6c, type: 3}
 --- !u!64 &1107060975
@@ -18639,6 +18639,10 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 3
       objectReference: {fileID: 0}
+    - target: {fileID: -8952034665193475808, guid: d825e0eda667c4abf9e9adc6858b5d6c, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 41.13
+      objectReference: {fileID: 0}
     - target: {fileID: -8927823055543756579, guid: d825e0eda667c4abf9e9adc6858b5d6c, type: 3}
       propertyPath: m_Layer
       value: 3
@@ -19174,6 +19178,10 @@ PrefabInstance:
     - target: {fileID: -6873771490942633629, guid: d825e0eda667c4abf9e9adc6858b5d6c, type: 3}
       propertyPath: m_Layer
       value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: -6851195534962745550, guid: d825e0eda667c4abf9e9adc6858b5d6c, type: 3}
+      propertyPath: m_Name
+      value: SmallBuilding
       objectReference: {fileID: 0}
     - target: {fileID: -6851195534962745550, guid: d825e0eda667c4abf9e9adc6858b5d6c, type: 3}
       propertyPath: m_Layer

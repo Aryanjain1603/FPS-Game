@@ -2262,7 +2262,7 @@ MonoBehaviour:
   bulletPooling: {fileID: 0}
   stats:
     damage: 25
-    range: 100
+    range: 60
     fireRate: 20
     reloadTime: 1
     clipSize: 30
@@ -3835,7 +3835,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 12b04edb01c041299ced9bcd6bf8bf44, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 5
+  moveSpeed: 10
   gravity: -30
   jumpHeight: 2
   groundCheck: {fileID: 7263221463102810405}
@@ -4450,17 +4450,17 @@ MonoBehaviour:
   stats:
     damage: 100
     range: 100
-    fireRate: 1
-    reloadTime: 1
-    clipSize: 30
-    maxClipSize: 30
+    fireRate: 0.5
+    reloadTime: 2
+    clipSize: 6
+    maxClipSize: 6
     ammo: 100
     maxAmmo: 100
     accuracy: 1
-    recoil: 0.1
+    recoil: 10
     bulletSpeed: 10
     pelletsPerShot: 1
-    spreadAngle: 0
+    spreadAngle: 2
   crosshair: {fileID: 2283315234452550649}
   ammoText: {fileID: 4994459709347068814}
   muzzleFlash: {fileID: 3510556095648246550}
@@ -4474,7 +4474,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 4294967295
   scopeZoom: 4
-  scopeTime: 0.3
+  scopeTime: 0.5
   scopeOverlay: {fileID: 0}
   boltSound: {fileID: 0}
 --- !u!1 &6864047152062065465
@@ -4763,11 +4763,11 @@ MonoBehaviour:
   bulletPooling: {fileID: 0}
   stats:
     damage: 10
-    range: 100
+    range: 20
     fireRate: 5
     reloadTime: 1
-    clipSize: 30
-    maxClipSize: 30
+    clipSize: 10
+    maxClipSize: 10
     ammo: 100
     maxAmmo: 100
     accuracy: 1
