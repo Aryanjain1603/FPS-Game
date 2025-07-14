@@ -20,6 +20,8 @@ public class NetworkManager :
     public Canvas networkCanvas;
     
     
+    
+    
     public List<Transform> spawnPoints = new List<Transform>();
 
     public GameObject intiPanel;

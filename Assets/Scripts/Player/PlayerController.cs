@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Cinemachine;
 using NUnit.Framework.Constraints;
@@ -60,8 +61,8 @@ public class PlayerController : MonoBehaviourPun, I_Damageable
 
     private void Update()
     {
-        CheckForMapFallOff();
         if (!photonView.IsMine) return;
+        CheckForMapFallOff();
 
         HandleGunSwitching();
 
@@ -87,8 +88,16 @@ public class PlayerController : MonoBehaviourPun, I_Damageable
             sniper.SetActive(gunSwitch);
         }
     }
-    
-    
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("DeathByFall"))
+        {
+            ReSpawn();
+        }
+    }
+
+
     private void HandleMovement()
     {
         // Ground Check
