@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using ExitGames.Client.Photon;
 using UnityEngine;
@@ -6,6 +7,7 @@ using Photon.Realtime;
 using TMPro;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using Random = UnityEngine.Random;
 
 public class NetworkManager :
         MonoBehaviourPunCallbacks
@@ -32,7 +34,18 @@ public class NetworkManager :
             else Destroy(gameObject);
             DontDestroyOnLoad(gameObject);
         }
-        
+
+        private void Start()
+        {
+
+            if (PhotonNetwork.IsConnected)
+            {
+                intiPanel.SetActive(false);
+                networkPanel.SetActive(true);
+                
+            }
+        }
+
         //Called by start button
         public void ConnectToServer()
         {
@@ -81,16 +94,22 @@ public class NetworkManager :
             // Subscribe to scene load event
             SceneManager.sceneLoaded += OnSceneLoaded;
         }
+        
 
         public void OnLeaveLobbyButtonClicked()
         {
-            PhotonNetwork.LeaveLobby();
-            Debug.Log("LeaveLobbyButtonClicked");
+            // PhotonNetwork.LeaveLobby();
+            PhotonNetwork.LeaveRoom();
+            Debug.Log("LeaveRoomoButtonClicked");
         }
 
         public override void OnLeftRoom()
         {
             Debug.Log("LeftRoom callback called");
+            PhotonNetwork.LoadLevel("Network");
+            PhotonNetwork.JoinLobby();
+
+
         }
         
         private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
