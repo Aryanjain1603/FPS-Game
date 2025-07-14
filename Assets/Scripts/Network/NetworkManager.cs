@@ -17,6 +17,7 @@ public class NetworkManager :
     [SerializeField] private TMP_InputField NickNameInputField;
     [SerializeField] private Button startButton;
     private string nickName;
+    public Canvas networkCanvas;
     
     
     public List<Transform> spawnPoints = new List<Transform>();
@@ -107,6 +108,7 @@ public class NetworkManager :
         {
             Debug.Log("LeftRoom callback called");
             PhotonNetwork.LoadLevel("Network");
+            SceneManager.sceneLoaded += OnSceneLoaded;
             PhotonNetwork.JoinLobby();
 
 
@@ -121,6 +123,15 @@ public class NetworkManager :
                 PhotonNetwork.Instantiate(playerPrefab.name, GetPosition(), Quaternion.identity);
                 PhotonNetwork.LocalPlayer.NickName = nickName;
                 UIManager.instance.GameSceneCanvasVisibility(true);
+            }
+
+            if (scene.name == "Network" && PhotonNetwork.IsConnected)
+            {
+                intiPanel.SetActive(false);
+                networkPanel.SetActive(true);
+                networkCanvas.enabled = true;
+                
+                
             }
 
             // Unsubscribe after spawning
