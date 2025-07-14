@@ -18,7 +18,7 @@ public class AssaultRifle : BaseGun
         base.HandleInput();
         
         // Full-auto fire mode
-        if (Input.GetMouseButtonDown(0) && !CursorLock.isCursorLock )
+        if (Input.GetMouseButtonDown(0))
         {
             isHoldingTrigger = true;
             StartCoroutine(AutoFire());

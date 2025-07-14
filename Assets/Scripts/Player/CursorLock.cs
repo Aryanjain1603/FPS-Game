@@ -4,7 +4,7 @@ namespace Player
 {
     public static class CursorLock
     {
-        public static bool isCursorLock = true;
+        public static bool isCursorLock = false;
         public static void CursorLockStatus(bool status)
         {
             // if (status)

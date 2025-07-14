@@ -16,7 +16,7 @@ public class Shotgun : BaseGun
         base.HandleInput();
         
         // Shotgun fire mode
-        if (Input.GetMouseButtonDown(0) && !CursorLock.isCursorLock )
+        if (Input.GetMouseButtonDown(0) )
         {
             TryShoot();
         }

@@ -34,7 +34,7 @@ public class SniperRifle : BaseGun
         }
         
         // Single shot fire mode
-        if (Input.GetMouseButtonDown(0) && !CursorLock.isCursorLock)
+        if (Input.GetMouseButtonDown(0))
         {
             TryShoot();
         }

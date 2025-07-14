@@ -36,7 +36,7 @@ public class ScoreManager : MonoBehaviourPunCallbacks
             remainingTime = roundDuration;
             hasRoundEnded = false;
             hasRoundsStarted = true;
-            CursorLock.CursorLockStatus(true);
+            // CursorLock.CursorLockStatus(true);
         }
     }
 

@@ -13,7 +13,7 @@ public class Pistol : BaseGun
         base.HandleInput();
         
         // Pistol fire mode - semi-automatic (single shot per click)
-        if (Input.GetMouseButtonDown(0) && !CursorLock.isCursorLock)
+        if (Input.GetMouseButtonDown(0))
         {
             TryShoot();
         }

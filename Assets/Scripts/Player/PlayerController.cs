@@ -146,8 +146,8 @@ public class PlayerController : MonoBehaviourPun, I_Damageable
         health = 100;
         OnDamage?.Invoke(health);
         controller.enabled = true;
-        health = 100;
-        OnDamage?.Invoke(health);
+        // health = 100;
+        // OnDamage?.Invoke(health);
     }
 
     private void HandleLeavePanel()
@@ -159,7 +159,7 @@ public class PlayerController : MonoBehaviourPun, I_Damageable
     private void OnLeaveButtonPressed()
     {
         UIManager.instance.LeavePanelVisibility(true);
-        CursorLock.CursorLockStatus(false);
+        // CursorLock.CursorLockStatus(false);
     }
 
    

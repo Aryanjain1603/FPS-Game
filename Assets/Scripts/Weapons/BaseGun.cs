@@ -107,7 +107,7 @@ public abstract class BaseGun : MonoBehaviourPun
         }
         
         // Fire input - override in child classes for different fire modes
-        if (Input.GetMouseButtonDown(0) && !CursorLock.isCursorLock )
+        if (Input.GetMouseButtonDown(0))
         {
             TryShoot();
         }
