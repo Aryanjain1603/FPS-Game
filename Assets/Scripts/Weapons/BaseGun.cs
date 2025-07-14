@@ -3,6 +3,7 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 using Photon.Pun;
+using Player;
 using TMPro;
 
 [System.Serializable]
@@ -106,7 +107,7 @@ public abstract class BaseGun : MonoBehaviourPun
         }
         
         // Fire input - override in child classes for different fire modes
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButtonDown(0) && !CursorLock.isCursorLock )
         {
             TryShoot();
         }

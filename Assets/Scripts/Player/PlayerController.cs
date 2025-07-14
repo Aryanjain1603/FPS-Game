@@ -3,6 +3,7 @@ using Cinemachine;
 using NUnit.Framework.Constraints;
 using UnityEngine;
 using Photon.Pun;
+using Player;
 
 [RequireComponent(typeof(CharacterController))]
 public class PlayerController : MonoBehaviourPun, I_Damageable
@@ -63,6 +64,7 @@ public class PlayerController : MonoBehaviourPun, I_Damageable
         HandleGunSwitching();
 
         HandleMovement();
+        HandleLeavePanel();
         playerCam.HandleLook(input.LookInput);
     }
 
@@ -147,4 +149,18 @@ public class PlayerController : MonoBehaviourPun, I_Damageable
         health = 100;
         OnDamage?.Invoke(health);
     }
+
+    private void HandleLeavePanel()
+    {
+        if (!input.LeaveButtonPressed) return;
+        OnLeaveButtonPressed();
+    }
+    
+    private void OnLeaveButtonPressed()
+    {
+        UIManager.instance.LeavePanelVisibility(true);
+        CursorLock.CursorLockStatus(false);
+    }
+
+   
 }

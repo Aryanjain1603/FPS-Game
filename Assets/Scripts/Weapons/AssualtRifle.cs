@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections;
+using Player;
 
 // ASSAULT RIFLE - Full automatic fire
 public class AssaultRifle : BaseGun
@@ -17,7 +18,7 @@ public class AssaultRifle : BaseGun
         base.HandleInput();
         
         // Full-auto fire mode
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButtonDown(0) && !CursorLock.isCursorLock )
         {
             isHoldingTrigger = true;
             StartCoroutine(AutoFire());

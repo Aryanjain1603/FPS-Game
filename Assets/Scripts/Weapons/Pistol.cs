@@ -1,5 +1,6 @@
 using UnityEngine;
 using Photon.Pun;
+using Player;
 
 public class Pistol : BaseGun
 {
@@ -12,7 +13,7 @@ public class Pistol : BaseGun
         base.HandleInput();
         
         // Pistol fire mode - semi-automatic (single shot per click)
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButtonDown(0) && !CursorLock.isCursorLock)
         {
             TryShoot();
         }

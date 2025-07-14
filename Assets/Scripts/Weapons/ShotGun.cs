@@ -1,4 +1,5 @@
 using System.Collections;
+using Player;
 using UnityEngine;
 
 public class Shotgun : BaseGun
@@ -15,7 +16,7 @@ public class Shotgun : BaseGun
         base.HandleInput();
         
         // Shotgun fire mode
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButtonDown(0) && !CursorLock.isCursorLock )
         {
             TryShoot();
         }

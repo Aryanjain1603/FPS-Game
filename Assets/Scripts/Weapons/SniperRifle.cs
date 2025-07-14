@@ -1,4 +1,5 @@
 using System.Collections;
+using Player;
 using UnityEngine;
 
 public class SniperRifle : BaseGun
@@ -33,7 +34,7 @@ public class SniperRifle : BaseGun
         }
         
         // Single shot fire mode
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButtonDown(0) && !CursorLock.isCursorLock)
         {
             TryShoot();
         }

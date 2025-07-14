@@ -33,8 +33,7 @@ public class NetworkManager :
             DontDestroyOnLoad(gameObject);
         }
         
-
-
+        //Called by start button
         public void ConnectToServer()
         {
             if (NickNameInputField.text.Length >= 0)
@@ -75,6 +74,7 @@ public class NetworkManager :
         
         public override void OnJoinedRoom()
         {
+            UIManager.instance.NetworkCanvasVisibility(false);
             Debug.Log("Joined Room: " + PhotonNetwork.CurrentRoom.Name);
             PhotonNetwork.LoadLevel("BattleScene");
 
@@ -82,15 +82,26 @@ public class NetworkManager :
             SceneManager.sceneLoaded += OnSceneLoaded;
         }
 
+        public void OnLeaveLobbyButtonClicked()
+        {
+            PhotonNetwork.LeaveLobby();
+            Debug.Log("LeaveLobbyButtonClicked");
+        }
+
+        public override void OnLeftRoom()
+        {
+            Debug.Log("LeftRoom callback called");
+        }
+        
         private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
         {
             // Only spawn player if we're in the game scene
             if (scene.name == "BattleScene")
             {
                 
-                
                 PhotonNetwork.Instantiate(playerPrefab.name, GetPosition(), Quaternion.identity);
                 PhotonNetwork.LocalPlayer.NickName = nickName;
+                UIManager.instance.GameSceneCanvasVisibility(true);
             }
 
             // Unsubscribe after spawning

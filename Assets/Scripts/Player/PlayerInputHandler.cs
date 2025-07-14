@@ -4,13 +4,12 @@ using UnityEngine.InputSystem;
 public class PlayerInputHandler : MonoBehaviour
 {
     private PlayerInputActions inputActions;
-
+    
     public Vector2 MoveInput { get; private set; }
     public Vector2 LookInput { get; private set; }
     public bool JumpTriggered { get; private set; }
-    
+    public bool LeaveButtonPressed { get; private set; }
     public bool InteractTriggered { get; private set; }
-    
     public bool SprintTriggered { get; private set; }
 
     private void Awake()
@@ -21,6 +20,8 @@ public class PlayerInputHandler : MonoBehaviour
     private void OnEnable()
     {
         inputActions.Player.Enable();
+        
+        inputActions.Player.Leave.performed += ctx => LeaveButtonPressed = true;
 
         inputActions.Player.Move.performed += ctx => MoveInput = ctx.ReadValue<Vector2>();
         inputActions.Player.Move.canceled += ctx => MoveInput = Vector2.zero;
@@ -45,5 +46,8 @@ public class PlayerInputHandler : MonoBehaviour
         JumpTriggered = false; // Reset jump after read
         InteractTriggered = false; // Reset interact after read
         SprintTriggered = false; // Reset sprint after read
+        LeaveButtonPressed = false;
     }
+
+    
 }

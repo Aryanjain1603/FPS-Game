@@ -1,3 +1,4 @@
+using Player;
 using UnityEngine;
 
 public class PlayerCamera : MonoBehaviour
@@ -11,8 +12,7 @@ public class PlayerCamera : MonoBehaviour
     
     void Start()
     {
-        Cursor.lockState = CursorLockMode.Locked; // Locks to center of screen
-        Cursor.visible = false;                   // Hides the cursor
+        
     }
 
     public void HandleLook(Vector2 lookInput)

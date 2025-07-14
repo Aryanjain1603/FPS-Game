@@ -2,7 +2,9 @@ using System;
 using System.Collections.Generic;
 using Photon.Pun;
 using Photon.Realtime;
+using Player;
 using UnityEngine;
+using UnityEngine.InputSystem.UI;
 
 
 public class ScoreManager : MonoBehaviourPunCallbacks
@@ -34,6 +36,7 @@ public class ScoreManager : MonoBehaviourPunCallbacks
             remainingTime = roundDuration;
             hasRoundEnded = false;
             hasRoundsStarted = true;
+            CursorLock.CursorLockStatus(true);
         }
     }
 
@@ -87,7 +90,7 @@ public class ScoreManager : MonoBehaviourPunCallbacks
         OnScoreChanged?.Invoke(actorNumber, newScore);
         playerScores[actorNumber] =  newScore;
         
-        Player player = PhotonNetwork.CurrentRoom.GetPlayer(actorNumber);
+        Photon.Realtime.Player player = PhotonNetwork.CurrentRoom.GetPlayer(actorNumber);
         string nickname = player.NickName;
         
         Debug.Log($"updated Score : Player {nickname} : {newScore}");
@@ -110,7 +113,7 @@ public class ScoreManager : MonoBehaviourPunCallbacks
 
     }
 
-    public override void OnMasterClientSwitched(Player newMasterClient)
+    public override void OnMasterClientSwitched(Photon.Realtime.Player newMasterClient)
     {
         Debug.Log($"OnMasterClientSwitched to {newMasterClient}");
         if (PhotonNetwork.IsMasterClient)
