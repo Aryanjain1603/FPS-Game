@@ -33,7 +33,9 @@ public class PlayerController : MonoBehaviourPun, I_Damageable
 
     public PlayerInputHandler input;
     private PlayerCamera playerCam;
-    
+
+
+    private bool leavePanelVisibility = false;
     //Events ->
     public delegate void OnDamageEvent(int damage);
     public static event OnDamageEvent OnDamage;
@@ -158,7 +160,8 @@ public class PlayerController : MonoBehaviourPun, I_Damageable
     
     private void OnLeaveButtonPressed()
     {
-        UIManager.instance.LeavePanelVisibility(true);
+        leavePanelVisibility = !leavePanelVisibility;
+        UIManager.instance.LeavePanelVisibility(leavePanelVisibility);
         // CursorLock.CursorLockStatus(false);
     }
 
