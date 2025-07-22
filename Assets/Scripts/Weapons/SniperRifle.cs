@@ -1,11 +1,13 @@
 using System.Collections;
+using Player;
 using UnityEngine;
 
 public class SniperRifle : BaseGun
 {
     [Header("Sniper Specific")]
+    
     [SerializeField] private float scopeZoom = 4f;
-    [SerializeField] private float scopeTime = 0.3f;
+    [SerializeField] private float scopeTime = 0.5f;
     [SerializeField] private GameObject scopeOverlay;
     [SerializeField] private AudioClip boltSound;
     
@@ -68,10 +70,10 @@ public class SniperRifle : BaseGun
     {
         float targetFOV = isScoped ? originalFOV / scopeZoom : originalFOV;
         float startFOV = cam.fieldOfView;
-        
-        if (scopeOverlay != null)
-            scopeOverlay.SetActive(isScoped);
-        
+
+        if (!isScoped && scopeOverlay != null)
+            scopeOverlay.SetActive(false); // Hide immediately when unscoping
+
         float elapsed = 0f;
         while (elapsed < scopeTime)
         {
@@ -79,9 +81,13 @@ public class SniperRifle : BaseGun
             cam.fieldOfView = Mathf.Lerp(startFOV, targetFOV, elapsed / scopeTime);
             yield return null;
         }
-        
+
         cam.fieldOfView = targetFOV;
+
+        if (isScoped && scopeOverlay != null)
+            scopeOverlay.SetActive(true); // Show only after delay when scoping in
     }
+
     
     private IEnumerator PlayBoltAction()
     {

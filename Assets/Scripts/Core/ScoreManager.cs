@@ -1,8 +1,12 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Photon.Pun;
 using Photon.Realtime;
+using Player;
+using TMPro;
 using UnityEngine;
+using UnityEngine.InputSystem.UI;
 
 
 public class ScoreManager : MonoBehaviourPunCallbacks
@@ -15,8 +19,10 @@ public class ScoreManager : MonoBehaviourPunCallbacks
     private bool hasRoundEnded = false;
     private bool hasRoundsStarted = false;
     public PhotonView photonView;
+
+    public TextMeshProUGUI leaderboardText;
     
-    public event Action<int,int> OnScoreChanged;
+    public event Action<string,int> OnScoreChanged;
 
     private void Awake()
     {
@@ -34,6 +40,7 @@ public class ScoreManager : MonoBehaviourPunCallbacks
             remainingTime = roundDuration;
             hasRoundEnded = false;
             hasRoundsStarted = true;
+            // CursorLock.CursorLockStatus(true);
         }
     }
 
@@ -76,20 +83,35 @@ public class ScoreManager : MonoBehaviourPunCallbacks
             playerScores[killerActorNumber] = 0;
         
         playerScores[killerActorNumber]++;
-        
-        
+
+        UpdateLeaderboardUI();
         photonView.RPC(nameof(UpdateKillCountRPC),RpcTarget.All,killerActorNumber,playerScores[killerActorNumber]);
+    }
+
+    public void UpdateLeaderboardUI()
+    {
+        leaderboardText.text = "Leaderboard:\n";
+        foreach (var entry in playerScores.OrderByDescending(x => x.Value))
+        {
+            int actorNumber = entry.Key;
+            int kills = entry.Value;
+            string nickname = PhotonNetwork.CurrentRoom.GetPlayer(actorNumber)?.NickName ?? "Unknown";
+
+            leaderboardText.text += $"{nickname} - {kills} kills\n";
+        }
     }
 
     [PunRPC]
     public void UpdateKillCountRPC(int actorNumber, int newScore)
     {
-        OnScoreChanged?.Invoke(actorNumber, newScore);
+        playerScores[actorNumber] = newScore;
+        
         playerScores[actorNumber] =  newScore;
         
-        Player player = PhotonNetwork.CurrentRoom.GetPlayer(actorNumber);
+        Photon.Realtime.Player player = PhotonNetwork.CurrentRoom.GetPlayer(actorNumber);
         string nickname = player.NickName;
         
+        OnScoreChanged?.Invoke(nickname, newScore);
         Debug.Log($"updated Score : Player {nickname} : {newScore}");
     }
 
@@ -107,10 +129,9 @@ public class ScoreManager : MonoBehaviourPunCallbacks
     public int GetScore(int actorNumber)
     {
         return playerScores.TryGetValue(actorNumber, out var score) ? score : 0;
-
     }
 
-    public override void OnMasterClientSwitched(Player newMasterClient)
+    public override void OnMasterClientSwitched(Photon.Realtime.Player newMasterClient)
     {
         Debug.Log($"OnMasterClientSwitched to {newMasterClient}");
         if (PhotonNetwork.IsMasterClient)

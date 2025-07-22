@@ -29,7 +29,8 @@ public class PlayerAnimatorController : MonoBehaviourPun
         animator.SetBool("Aim", isAiming);
         
         // Set layer weight for aiming
-        animator.SetLayerWeight(aimLayerIndex, isAiming ? 1f : 0f);
+        
+        // animator.SetLayerWeight(aimLayerIndex, isAiming ? 1f : 0f);
         
     }
 
@@ -64,6 +65,5 @@ public class PlayerAnimatorController : MonoBehaviourPun
     {
         // Use the same logic as PlayerController
         return playerController.isGrounded;
-        return Physics.CheckSphere(playerController.groundCheck.position, playerController.groundDistance, playerController.groundMask);
     }
 }

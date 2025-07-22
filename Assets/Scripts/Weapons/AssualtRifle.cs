@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections;
+using Player;
 
 // ASSAULT RIFLE - Full automatic fire
 public class AssaultRifle : BaseGun

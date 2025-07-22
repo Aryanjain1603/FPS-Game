@@ -1,7 +1,10 @@
+using System;
 using System.Collections.Generic;
+using Cinemachine;
 using NUnit.Framework.Constraints;
 using UnityEngine;
 using Photon.Pun;
+using Player;
 
 [RequireComponent(typeof(CharacterController))]
 public class PlayerController : MonoBehaviourPun, I_Damageable
@@ -11,6 +14,7 @@ public class PlayerController : MonoBehaviourPun, I_Damageable
     public float gravity = -9.81f;
     public float jumpHeight = 2f;
     private bool gunSwitch = false;
+    
 
     [Header("Ground Check")]
     public Transform groundCheck;
@@ -30,7 +34,9 @@ public class PlayerController : MonoBehaviourPun, I_Damageable
 
     public PlayerInputHandler input;
     private PlayerCamera playerCam;
-    
+
+
+    private bool leavePanelVisibility = false;
     //Events ->
     public delegate void OnDamageEvent(int damage);
     public static event OnDamageEvent OnDamage;
@@ -56,11 +62,21 @@ public class PlayerController : MonoBehaviourPun, I_Damageable
     private void Update()
     {
         if (!photonView.IsMine) return;
+        CheckForMapFallOff();
 
         HandleGunSwitching();
 
         HandleMovement();
+        HandleLeavePanel();
         playerCam.HandleLook(input.LookInput);
+    }
+
+    private void CheckForMapFallOff()
+    {
+        if (transform.position.y < -10f)
+        {
+            ReSpawn();
+        }
     }
 
     private void HandleGunSwitching()
@@ -72,8 +88,16 @@ public class PlayerController : MonoBehaviourPun, I_Damageable
             sniper.SetActive(gunSwitch);
         }
     }
-    
-    
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("DeathByFall"))
+        {
+            ReSpawn();
+        }
+    }
+
+
     private void HandleMovement()
     {
         // Ground Check
@@ -102,6 +126,7 @@ public class PlayerController : MonoBehaviourPun, I_Damageable
         if (health <= 0)
         {
             PhotonNetwork.Destroy(gameObject);
+            controller.enabled = false;
         }
     }
 
@@ -131,6 +156,23 @@ public class PlayerController : MonoBehaviourPun, I_Damageable
         transform.position = NetworkManager.instance.GetPosition();
         health = 100;
         OnDamage?.Invoke(health);
-
+        controller.enabled = true;
+        // health = 100;
+        // OnDamage?.Invoke(health);
     }
+
+    private void HandleLeavePanel()
+    {
+        if (!input.LeaveButtonPressed) return;
+        OnLeaveButtonPressed();
+    }
+    
+    private void OnLeaveButtonPressed()
+    {
+        leavePanelVisibility = !leavePanelVisibility;
+        UIManager.instance.LeavePanelVisibility(leavePanelVisibility);
+        // CursorLock.CursorLockStatus(false);
+    }
+
+   
 }
